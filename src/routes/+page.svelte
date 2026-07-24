@@ -1,3 +1,24 @@
-<h1>CLOTHING ALLOWANCE</h1>
-<p>Ranui family</p>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  import { Child } from './+page.ts';
+  import ChildCard from "../components/child.svelte";
+
+  // Instantiate the objects for the Ranui children
+  const children = $state([
+    new Child('Nikau'),
+    new Child('Hana'),
+    new Child('Tia')
+  ]);
+</script>
+
+<main class="container mx-auto py-10 space-y-6">
+  <header>
+    <h1 class="text-3xl font-extrabold">Ranui Family Clothing Allowance</h1>
+    <p class="text-muted-foreground">Track annual allowances and bonus activity eligibility.</p>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {#each children as child (child.name)}
+      <ChildCard {child} />
+    {/each}
+  </div>
+</main>
