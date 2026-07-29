@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Child } from '../routes/+page.ts';
+  import { Child } from '$lib/child.svelte.ts';
   import * as Card from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import { Input } from '$lib/components/ui/input';

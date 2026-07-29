@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Child } from './+page.ts';
+  import { Child } from "$lib/child.svelte.ts";
   import ChildCard from "../components/child.svelte";
 
   // Instantiate the objects for the Ranui children
