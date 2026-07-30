@@ -9,6 +9,7 @@
 
     let amountToSpend = $state<number | ''>('');
     let errorMessage = $state<string>('');
+    let successMessage = $state<string>('');
 
     function handleSubmit() {
         errorMessage = '';
@@ -19,6 +20,7 @@
             errorMessage = result.message;
         } else {
             amountToSpend = '';
+            successMessage = result.message
         }
     }
 </script>
@@ -54,6 +56,8 @@
 
             {#if errorMessage}
                 <p class="text-xs font-medium text-destructive">{errorMessage}</p>
+            {:else if successMessage}
+                <p class="text-xs font-medium text-emerald-500">{successMessage}</p>
             {/if}
         </form>
     </Card.Content>
