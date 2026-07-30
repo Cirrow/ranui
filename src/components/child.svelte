@@ -1,26 +1,26 @@
 <script lang="ts">
-  import { Child } from '$lib/child.svelte';
-  import * as Card from '$lib/components/ui/card';
-  import { Badge } from '$lib/components/ui/badge';
-  import { Input } from '$lib/components/ui/input';
-  import { Button } from '$lib/components/ui/button';
+    import { Child } from '$lib/child.svelte';
+    import * as Card from '$lib/components/ui/card';
+    import { Badge } from '$lib/components/ui/badge';
+    import { Input } from '$lib/components/ui/input';
+    import { Button } from '$lib/components/ui/button';
 
-  let { child }: { child: Child } = $props();
+    let { child }: { child: Child } = $props();
 
-  let amountToSpend = $state<number | ''>('');
-  let errorMessage = $state<string>('');
+    let amountToSpend = $state<number | ''>('');
+    let errorMessage = $state<string>('');
 
-  function handleSubmit() {
-    errorMessage = '';
-    const numAmount = Number(amountToSpend);
+    function handleSubmit() {
+        errorMessage = '';
+        const numAmount = Number(amountToSpend);
 
-    const result = child.deductAllowance(numAmount);
-    if (!result.success) {
-      errorMessage = result.message;
-    } else {
-      amountToSpend = '';
+        const result = child.deductAllowance(numAmount);
+        if (!result.success) {
+            errorMessage = result.message;
+        } else {
+            amountToSpend = '';
+        }
     }
-  }
 </script>
 
 <Card.Root class="w-full max-w-sm">
