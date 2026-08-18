@@ -53,10 +53,11 @@
                 <Input
                     type="number"
                     step="0.01"
-                    min="0.01" <!-- New Zealand Dollar operates on a cent scale -->
+                    min="0.01"
                     placeholder="Amount ($)"
                     bind:value={amountToSpend}
                 />
+                <!-- New Zealand Dollar operates on a cent scale -->
                 <Button type="submit">Deduct</Button>
             </div>
 
