@@ -17,6 +17,7 @@
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Recursively render each child component -->
         {#each children as child (child.name)}
             <ChildCard {child} />
         {/each}
