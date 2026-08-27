@@ -1,9 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { Child } from '../src/lib/child.svelte';
 
-const VALID_MSG = 'Please enter a valid amount greater than $0.';
+const ERR_REQUIRE_POSITIVE_MSG = 'Please enter a valid amount greater than $0.';
 const SUCCESS_MSG = 'Expense recorded successfully!';
 
+// Test initial construction of the child class with valid name and initial balance.
+// Bonus must be elligible.
 describe('Child', () => {
     describe('constructor', () => {
         it('sets name and initial balance', () => {
@@ -17,6 +19,9 @@ describe('Child', () => {
         });
     });
 
+    // Test for success when deducting a valid number from balance
+    // Normal valid amount, exact remaining balance, smallest possible amount, sequential deductions at once,
+    // and floating point accumulation
     describe('deductAllowance — valid amounts', () => {
         it('deducts a valid amount', () => {
             const child = new Child('Tia');
@@ -52,6 +57,8 @@ describe('Child', () => {
         });
     });
 
+    // Deduct invalid inputs.
+    // It shoudl reject negative number, zero, JS Number(NaN), NaN directly, undefined, null, a NaN as number, and infinity.
     describe('deductAllowance — invalid inputs', () => {
         it.each([
             [-20, 'a negative number'],
@@ -65,7 +72,7 @@ describe('Child', () => {
             const child = new Child('Tia');
             const result = child.deductAllowance(input as unknown as number);
             expect(result.success).toBe(false);
-            expect(result.message).toBe(VALID_MSG);
+            expect(result.message).toBe(ERR_REQUIRE_POSITIVE_MSG);
             expect(child.balance).toBe(300);
         });
 
@@ -79,6 +86,8 @@ describe('Child', () => {
         });
     });
 
+    // Prevent overspend
+    // Any number over the balance is rejected, and when balance is zero any deduction is rejected.
     describe('deductAllowance — overspend protection', () => {
         it('rejects an amount just over the balance', () => {
             const child = new Child('Tia');
@@ -98,6 +107,8 @@ describe('Child', () => {
         });
     });
 
+    // BOnus boundary
+    // Exact value and 0 is rejected, while anything over the boundary is accepted.
     describe('receivesBonus — boundary', () => {
         it.each([
             [50, false],
