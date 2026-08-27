@@ -10,6 +10,7 @@
     ]);
 </script>
 
+<!-- Main frontend -->
 <main class="container mx-auto py-10 space-y-6">
     <header>
         <h1 class="text-3xl font-extrabold">Ranui Family Clothing Allowance</h1>

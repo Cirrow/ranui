@@ -5,6 +5,7 @@
     import { Input } from '$lib/components/ui/input';
     import { Button } from '$lib/components/ui/button';
 
+    // svelte props
     let { child }: { child: Child } = $props();
 
     // Initialise state variables
@@ -29,7 +30,9 @@
     }
 </script>
 
+<!-- HTML to display information -->
 <Card.Root class="w-full max-w-sm">
+    <!-- Header to display heading -->
     <Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
         <Card.Title class="text-xl font-bold">{child.name}</Card.Title>
 
@@ -42,12 +45,14 @@
 
     </Card.Header>
 
+    <!-- content for the children card-->
     <Card.Content class="space-y-4 pt-4">
         <div>
             <p class="text-xs uppercase tracking-wider text-muted-foreground">Remaining Allowance</p>
             <p class="text-3xl font-extrabold">${child.balance.toFixed(2)}</p>
         </div>
 
+        <!-- HTML form to run the handleSubmit function -->
         <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-2">
             <div class="flex gap-2">
                 <Input
