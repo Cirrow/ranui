@@ -30,9 +30,12 @@ modules, and should not be modified:
 
 ### Testing
 Run the Vitest test suite:
+```bash
 npm test                 # once
 npm run test:watch       # watch mode
 npm run test:coverage    # with coverage report
+```
+
 Tests live in `test/child.svelte.test.ts` (configured via `vitest.config.ts`).
 And optionally append to the "files of interest" list:
 - `test/child.svelte.test.ts` includes Vitest tests for the child OOP logic.
