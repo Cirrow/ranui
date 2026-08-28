@@ -21,25 +21,19 @@ export class Child {
 
     /// Deduct certain amount from balance
     // returns an object with a boolean success indicator and a string error/success message.
-    deductAllowance(amount: number): { success: boolean; message: string } {
-
-        if (isNaN(amount) || amount <= 0) {
-            // Input to deduct is invalid (NaN) or 0 or negative
+    // Receive HTML string, convert into number
+    deductAllowance(amountInput: string): { success: boolean; message: string } {
+        const amount = Number(amountInput);
+        if (Number.isNaN(amount) || amount <= 0) {
             return { success: false, message: "Please enter a valid amount greater than $0." };
         }
-
-        // overspend prevention
-        // inequality calculation
         if (amount > this.balance) {
             return {
                 success: false,
                 message: `Transaction declined: Exceeds remaining balance ($${this.balance.toFixed(2)}).`
             };
         }
-
-        // deduct balance and return
         this.balance -= amount;
         return { success: true, message: "Expense recorded successfully!" };
-
     }
 }

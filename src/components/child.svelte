@@ -9,25 +9,20 @@
     let { child }: { child: Child } = $props();
 
     // Initialise state variables
-    let amountToSpend = $state<number | ''>('');
+    let amountToSpend = $state<string>('');
     let errorMessage = $state<string>('');
     let successMessage = $state<string>('');
 
     function handleSubmit() {
-        // Initialise error message
-        errorMessage = '';
-        //HTML input String -> JS number
-        const numAmount = Number(amountToSpend);
-
-        const result = child.deductAllowance(numAmount);
-        if (!result.success) {
-            errorMessage = result.message;
-        } else {
-            // Could not deduct, feedback as error to user
-            amountToSpend = '';
-            successMessage = result.message
-        }
+           errorMessage = '';
+           const result = child.deductAllowance(amountToSpend);
+           if (result.success) {
+               amountToSpend = '';
+           }
+           successMessage = result.success ? result.message : '';
+           errorMessage = result.success ? '' : result.message;
     }
+
 </script>
 
 <!-- HTML to display information -->
@@ -53,7 +48,7 @@
         </div>
 
         <!-- HTML form to run the handleSubmit function -->
-        <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-2">
+        <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-2" novalidate>
             <div class="flex gap-2">
                 <Input
                     type="number"
