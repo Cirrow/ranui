@@ -13,9 +13,10 @@
     let errorMessage = $state<string>('');
     let successMessage = $state<string>('');
 
-    //the function to run when the form is submitted
+    // the function to run when the form is submitted
+    // does not return anything; runs deductAllowance code then displays success/error messages
     function handleSubmit() {
-        // init error message
+        // initialise error message
         errorMessage = '';
         const result = child.deductAllowance(amountToSpend);
         // reset variable for next usage
@@ -60,7 +61,7 @@
                     placeholder="Amount ($)"
                     bind:value={amountToSpend}
                 />
-                <!-- New Zealand Dollar operates on a cent scale -->
+                <!-- New Zealand Dollar operates on a cent scale, so step and min values are 0.01 -->
                 <Button type="submit">Deduct</Button>
             </div>
 

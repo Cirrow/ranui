@@ -3,6 +3,7 @@
     import ChildCard from "../components/child.svelte";
 
     // Instantiate the objects for the Ranui children
+    // able to be extended should more children be required to track
     const children = $state([
         new Child('Nikau'),
         new Child('Hana'),
