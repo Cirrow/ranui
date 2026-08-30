@@ -23,16 +23,27 @@ export class Child {
     // returns an object with a boolean success indicator and a string error/success message.
     // Receive HTML string, convert into number
     deductAllowance(amountInput: string): { success: boolean; message: string } {
-        const amount = Number(amountInput);
-        if (Number.isNaN(amount) || amount <= 0) {
+        //remove surrounding whitespace
+        const trimmed = amountInput.trim();
+
+        // Only allow digits, with an optional decimal point and up to 2 decimal places
+        if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) {
+            return { success: false, message: "Please enter a valid amount with up to 2 decimal places (e.g. 12.50)." };
+        }
+
+        const amount = Number(trimmed);
+        //invalid input error catch
+        if (amount < 0.01) {
             return { success: false, message: "Please enter a valid amount greater than $0." };
         }
+        // catch for overspending errors
         if (amount > this.balance) {
             return {
                 success: false,
                 message: `Transaction declined: Exceeds remaining balance ($${this.balance.toFixed(2)}).`
             };
         }
+        // deduct and return
         this.balance -= amount;
         return { success: true, message: "Expense recorded successfully!" };
     }
