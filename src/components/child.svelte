@@ -13,14 +13,17 @@
     let errorMessage = $state<string>('');
     let successMessage = $state<string>('');
 
+    //the function to run when the form is submitted
     function handleSubmit() {
-           errorMessage = '';
-           const result = child.deductAllowance(amountToSpend);
-           if (result.success) {
-               amountToSpend = '';
-           }
-           successMessage = result.success ? result.message : '';
-           errorMessage = result.success ? '' : result.message;
+        // init error message
+        errorMessage = '';
+        const result = child.deductAllowance(amountToSpend);
+        // reset variable for next usage
+        if (result.success) {
+            amountToSpend = '';
+        }
+        successMessage = result.success ? result.message : '';
+        errorMessage = result.success ? '' : result.message;
     }
 
 </script>
