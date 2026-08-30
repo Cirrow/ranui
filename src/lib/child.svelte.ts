@@ -1,5 +1,6 @@
 // Balance each child gets
 const INITIAL_BALANCE = 300;
+const BONUS_BOUNDARY = 50;
 
 
 export class Child {
@@ -14,14 +15,14 @@ export class Child {
     }
 
     /// Is the child elligible for bonus?
-    // returns boolean after inequality calculation
+    // exclusive inequality that follows the prompt
     get receivesBonus(): boolean {
-        return this.balance > 50;
+        return this.balance > BONUS_BOUNDARY;
     }
 
     /// Deduct certain amount from balance
     // returns an object with a boolean success indicator and a string error/success message.
-    // Receive HTML string, convert into number
+    // Receive HTML string as user input, convert into number for numerical calculations
     deductAllowance(amountInput: string): { success: boolean; message: string } {
         //remove surrounding whitespace
         const trimmed = String(amountInput).trim();
@@ -32,11 +33,12 @@ export class Child {
         }
 
         const amount = Number(trimmed);
-        //invalid input error catch
+        //minimum input error catch
         if (amount < 0.01) {
             return { success: false, message: "Please enter a valid amount greater than $0." };
         }
         // catch for overspending errors
+        // protects against negative balance
         if (amount > this.balance) {
             return {
                 success: false,
