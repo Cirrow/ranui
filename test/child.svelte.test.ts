@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { Child } from '../src/lib/child.svelte';
 
+const ERR_INVALID_FORMATTING_MSG = 'Please enter a valid amount with up to 2 decimal places (e.g. 12.50).';
 const ERR_REQUIRE_POSITIVE_MSG = 'Please enter a valid amount greater than $0.';
 const SUCCESS_MSG = 'Expense recorded successfully!';
 const OVERSPEND_MSG = (bal: number) =>
@@ -60,28 +61,42 @@ describe('Child', () => {
     });
 
     // Deduct invalid inputs.
-    // It shoudl reject negative number, zero, JS Number(NaN), NaN directly, undefined, null, a NaN as number, and infinity.
+    // Rejects negative numbers, zero, letters, empty strings, and amounts
+    // with more than two decimal places (i.e. not a whole number of cents).
     describe('deductAllowance — invalid inputs', () => {
         it.each([
-            ['-20', 'a negative number'],
-            ['0', 'zero'],
-            ['abc', 'letters ("abc" → NaN)'],
-            ['', 'an empty string (→ 0)']
-        ])('rejects %s (%s)', (input, label) => {
+            ['-20', 'a negative number', ERR_INVALID_FORMATTING_MSG],
+            ['0', 'zero', ERR_REQUIRE_POSITIVE_MSG],
+            ['abc', 'letters ("abc" → NaN)', ERR_INVALID_FORMATTING_MSG],
+            ['', 'an empty string (→ 0)', ERR_INVALID_FORMATTING_MSG],
+            ['1.000000001', 'a fraction of a cent above whole dollars', ERR_INVALID_FORMATTING_MSG],
+            ['0.000000001', 'a fraction of a cent below one cent', ERR_INVALID_FORMATTING_MSG],
+            ['Infinity', 'the string "Infinity" (fails format)', ERR_INVALID_FORMATTING_MSG]
+        ])('rejects %s (%s)', (input, label, expectedMsg) => {
             const child = new Child('Tia');
             const result = child.deductAllowance(input);
             expect(result.success).toBe(false);
-            expect(result.message).toBe(ERR_REQUIRE_POSITIVE_MSG);
+            expect(result.message).toBe(expectedMsg);
             expect(child.balance).toBe(300);
         });
+    });
 
-        // "Infinity" converts to Infinity which is > 0 and > balance,
-        // so it produces the overspend message, not the "valid amount" message.
-        it('rejects "Infinity" as exceeding the balance', () => {
+    // Input coercion from a non-string value (e.g. a number from a number input) must be coerced safely instead of the old .trim() call throwing an error.
+    // Surrounding whitespace is trimmed before validation
+    describe('deductAllowance — input coercion', () => {
+        //accept numeric values
+        it('accepts a numeric value (coerced to string)', () => {
             const child = new Child('Tia');
-            const result = child.deductAllowance('Infinity');
-            expect(result).toEqual({ success: false, message: OVERSPEND_MSG(300) });
-            expect(child.balance).toBe(300);
+            const result = child.deductAllowance(50 as unknown as string);
+            expect(result.success).toBe(true);
+            expect(child.balance).toBe(250);
+        });
+
+        // trim surrounding whitespace
+        it('trims surrounding whitespace', () => {
+            const child = new Child('Tia');
+            expect(child.deductAllowance(' 50 ').success).toBe(true);
+            expect(child.balance).toBe(250);
         });
     });
 
