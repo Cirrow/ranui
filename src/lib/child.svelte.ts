@@ -24,7 +24,7 @@ export class Child {
     // Receive HTML string, convert into number
     deductAllowance(amountInput: string): { success: boolean; message: string } {
         //remove surrounding whitespace
-        const trimmed = amountInput.trim();
+        const trimmed = String(amountInput).trim();
 
         // Only allow digits, with an optional decimal point and up to 2 decimal places
         if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) {
